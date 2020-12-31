@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    environment:
+      - MYSQL_DATABASE=collect_db
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin@123
+  web:
+    image: ubuntu
+    build: .
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver"
+    container_name: data_service
+    volumes:
+      - .:/data_service
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
